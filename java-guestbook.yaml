@@ -1,0 +1,132 @@
+schemaVersion: 2.1.0
+metadata:
+  name: java-guestbook
+  namespace: iam-tgau-de-ibm-com-che-xh1hpw
+projects:
+  - name: java-guestbook
+    zip:
+      location: 'http://devfile-registry.openshift-operators.svc:8080/resources/v2/java-guestbook.zip'
+components:
+  - attributes:
+      app.kubernetes.io/name: tools
+      che-theia.eclipse.org/vscode-extensions:
+        - 'https://github.com/redhat-developer/codeready-workspaces-vscode-extensions/releases/download/7.44-che-assets/java-0.82.0-369.vsix'
+        - 'https://github.com/redhat-developer/codeready-workspaces-vscode-extensions/releases/download/7.44-che-assets/vscode-java-debug-0.26.0.vsix'
+        - 'https://open-vsx.org/api/vscjava/vscode-java-test/0.28.1/file/vscjava.vscode-java-test-0.28.1.vsix'
+      che-theia.eclipse.org/vscode-preferences:
+        java.server.launchMode: Standard
+    container:
+      args:
+        - sh
+        - '-c'
+        - '${PLUGIN_REMOTE_ENDPOINT_EXECUTABLE}'
+      endpoints:
+        - exposure: public
+          name: java-guestbook-backend
+          protocol: http
+          targetPort: 8080
+        - exposure: public
+          name: java-guestbook
+          protocol: http
+          targetPort: 8443
+        - exposure: none
+          name: debug
+          protocol: tcp
+          targetPort: 5005
+      env:
+        - name: PLUGIN_REMOTE_ENDPOINT_EXECUTABLE
+          value: /remote-endpoint/plugin-remote-endpoint
+        - name: THEIA_PLUGINS
+          value: 'local-dir:///plugins/sidecars/tools'
+        - name: CHE_DASHBOARD_URL
+          value: 'https://eclipse-che.devws1-bba6e428d9a6b7fd304f7b634190f27f-0000.eu-de.containers.appdomain.cloud'
+        - name: CHE_PLUGIN_REGISTRY_URL
+          value: 'https://eclipse-che.devws1-bba6e428d9a6b7fd304f7b634190f27f-0000.eu-de.containers.appdomain.cloud/plugin-registry/v3'
+        - name: CHE_PLUGIN_REGISTRY_INTERNAL_URL
+          value: 'http://plugin-registry.openshift-operators.svc:8080/v3'
+      image: 'quay.io/devfile/universal-developer-image:ubi8-0e189d9'
+      memoryLimit: 3Gi
+      sourceMapping: /projects
+      volumeMounts:
+        - name: m2
+          path: /home/user/.m2
+        - name: remote-endpoint
+          path: /remote-endpoint
+        - name: plugins
+          path: /plugins
+    name: tools
+  - container:
+      endpoints:
+        - exposure: none
+          name: java-guestbook-mongodb
+          protocol: tcp
+          targetPort: 27017
+      env:
+        - name: MONGODB_USER
+          value: user
+        - name: MONGODB_PASSWORD
+          value: password
+        - name: MONGODB_DATABASE
+          value: guestbook
+        - name: MONGODB_ADMIN_PASSWORD
+          value: password
+        - name: CHE_DASHBOARD_URL
+          value: 'https://eclipse-che.devws1-bba6e428d9a6b7fd304f7b634190f27f-0000.eu-de.containers.appdomain.cloud'
+        - name: CHE_PLUGIN_REGISTRY_URL
+          value: 'https://eclipse-che.devws1-bba6e428d9a6b7fd304f7b634190f27f-0000.eu-de.containers.appdomain.cloud/plugin-registry/v3'
+        - name: CHE_PLUGIN_REGISTRY_INTERNAL_URL
+          value: 'http://plugin-registry.openshift-operators.svc:8080/v3'
+      image: 'quay.io/eclipse/che--centos--mongodb-36-centos7:latest-ffdf2431bbc6d9a9d2a03e95bbbe8adb49ab9eac301f268a35038c84288259c1'
+      memoryLimit: 300Mi
+      sourceMapping: /projects
+      volumeMounts:
+        - name: mongodbdata
+          path: /var/lib/mongodb/data
+    name: mongo
+  - name: m2
+    volume:
+      size: 1G
+  - name: mongodbdata
+    volume:
+      size: 256Mi
+commands:
+  - exec:
+      commandLine: mvn clean install
+      component: tools
+      group:
+        isDefault: true
+        kind: build
+      label: build backend
+      workingDir: '${PROJECT_SOURCE}/backend'
+    id: maven-build-backend
+  - exec:
+      commandLine: mvn clean install
+      component: tools
+      group:
+        isDefault: true
+        kind: build
+      label: build frontend
+      workingDir: '${PROJECT_SOURCE}/frontend'
+    id: maven-build-frontend
+  - exec:
+      commandLine: |
+        java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006,quiet=y \
+        -jar target/backend-1.0.jar
+      component: tools
+      group:
+        isDefault: true
+        kind: run
+      label: run backend
+      workingDir: '${PROJECT_SOURCE}/backend'
+    id: run-backend
+  - exec:
+      commandLine: |
+        java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005,quiet=y \
+        -jar target/frontend-1.0.jar
+      component: tools
+      group:
+        isDefault: true
+        kind: run
+      label: run frontend
+      workingDir: '${PROJECT_SOURCE}/frontend'
+    id: run-frontend
