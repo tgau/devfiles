@@ -16,6 +16,9 @@ storageType=persistent|ephemeral
 .../#https://github.com/OpenLiberty/open-liberty-deep-dive
 .../#https://github.com/tgau/open-liberty-deep-dive-tgau
 
+https://workspaces.openshift.com
+https://workspaces.openshift.com/f?url=https://codeready-codeready-workspaces-operator.apps.sandbox.x8i5.p1.openshiftapps.com/devfile-registry/devfiles/03_java11-maven-gradle/devfile.yaml&override.attributes.persistVolumes=false
+
 ## Devfiles:
 https://registry.devfile.io/devfiles/java-openliberty
 
