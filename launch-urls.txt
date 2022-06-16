@@ -1,0 +1,32 @@
+https://che.eclipseprojects.io/2021/12/20/@florent.benoit-authoring-a-url-to-start-a-workspace.html
+
+https://che-host#<repository_url>?<new&><parameter_1>&<parameter_2>
+che-editor=<editor-id>
+devfilePath=mydevfile.yaml
+storageType=persistent|ephemeral
+
+<editor-id>:
+    ?che-editor=eclipse/che-theia/latest
+    ?che-editor=eclipse/che-theia/next
+    ?che-editor=che-incubator/che-code/insiders
+    ?che-editor=che-incubator/intellij-community/latest
+    ?che-editor=che-incubator/pycharm/latest
+
+## OpenLiberty-DeepDive
+.../#https://github.com/OpenLiberty/open-liberty-deep-dive
+.../#https://github.com/tgau/open-liberty-deep-dive-tgau
+
+## Devfiles:
+https://registry.devfile.io/devfiles/java-openliberty
+
+https://codeready-codeready-workspaces-operator.apps.sandbox-m2.ll9k.p1.openshiftapps.com/dashboard/#/load-factory/?url=https://codeready-codeready-workspaces-operator.apps.sandbox.x8i5.p1.openshiftapps.com/devfile-registry/devfiles/03_java11-maven-gradle/devfile.yaml&override.attributes.persistVolumes=false
+
+https://eclipse-che.devws1-bba6e428d9a6b7fd304f7b634190f27f-0000.eu-de.containers.appdomain.cloud/#https://github.com/che-samples/quarkus-quickstarts/tree/devfilev2&storageType=persistent
+https://eclipse-che.devws1-bba6e428d9a6b7fd304f7b634190f27f-0000.eu-de.containers.appdomain.cloud/dashboard/#/load-factory?url=https%3A%2F%2Fgithub.com%2Fche-samples%2Fquarkus-quickstarts%2Ftree%2Fdevfilev2&devWorkspace=https%3A%2F%2Feclipse-che.devws1-bba6e428d9a6b7fd304f7b634190f27f-0000.eu-de.containers.appdomain.cloud%2Fdevfile-registry%2Fdevfiles%2Fquarkus%2Fdevworkspace-che-theia-latest.yaml&storageType=persistent
+
+https://github.com/che-samples/bash/tree/devfilev2
+https://github.com/che-samples/bash/blob/devfilev2/devfile.yaml
+https://raw.githubusercontent.com/che-samples/bash/devfilev2/devfile.yaml
+https://github.com/che-samples/bash/tree/devfilev2&devWorkspacedevfile-registry/devfiles/bash/devworkspace-che-theia-latest.yaml&storageType=persistent
+https://github.com/che-samples/bash/tree/devfilev2&devWorkspacedevfile-registry/devfiles/bash/devworkspace-che-theia-latest.yaml&storageType=ehpemeral
+https://codeready-openshift-operators.devws2-bba6e428d9a6b7fd304f7b634190f27f-0000.eu-de.containers.appdomain.cloud/dashboard/#/load-factory?url=https%3A%2F%2Fgithub.com%2Fche-samples%2Fbash%2Ftree%2Fdevfilev2
